@@ -1,0 +1,11 @@
+name: HandBook
+main: ls.xunxian.handbook.XunHandBook
+version: 1.0
+author: XunXian
+
+commands:
+  xhd:
+    permission: "xhd.use"
+    permission-message: "你没有权限使用该指令"
+depend:
+  - MythicMobs
