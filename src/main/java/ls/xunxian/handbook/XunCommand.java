@@ -3,6 +3,7 @@ package ls.xunxian.handbook;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 
@@ -29,8 +30,11 @@ public class XunCommand implements CommandExecutor {
                         sender.sendMessage("§f[§cXunHandBook§f] §c暂无图鉴，请回到配置文件中创建!");
                     }
                     return true;
-
                 case "open":
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage("§f[§cXunHandBook§f] §c该指令只可以玩家使用");
+                        return true;
+                    }
                     if (args.length == 1 || args[1] == null) {
                         sender.sendMessage("§f[§cXunHandBook§f] §c指令缺少参数!");
                         sender.sendMessage("§f[§cXunHandBook§f] §c正确用法: /xhd open [图鉴名称]");
@@ -55,10 +59,11 @@ public class XunCommand implements CommandExecutor {
                 case "reload":
                     //重新加载handbook逻辑
                     //防止重复加载
+                    XunHandBook.getPlugin().reloadConfig();
                     XunBookGui.clearInventory();
                     XunBookGui.loadInventory();
+                    sender.sendMessage("§f[§cXunHandBook§f] §f插件已重载!");
                     return true;
-                case "help":
                 default:
                     sender.sendMessage("§e======§b寻仙图鉴§e======");
                     sender.sendMessage("§a/xhd help §f打开帮助菜单");

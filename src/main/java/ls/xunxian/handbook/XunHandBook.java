@@ -15,9 +15,9 @@ public class XunHandBook extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         saveDefaultConfig();
-        XunConfigManager.saveHandBook();
         XunBookGui.clearInventory();
         XunBookGui.loadInventory();
+        XunConfigManager.saveHandBook();
         Bukkit.getPluginCommand("xhd").setExecutor(new XunCommand());
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerClickListener(),this);
     }

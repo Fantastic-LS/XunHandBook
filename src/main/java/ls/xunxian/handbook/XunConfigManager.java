@@ -1,5 +1,8 @@
 package ls.xunxian.handbook;
 
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+
 import java.io.File;
 
 public class XunConfigManager {
@@ -11,7 +14,7 @@ public class XunConfigManager {
     }
 
     public static void saveHandBook() {
-        if (handBookFolder == null) {
+        if (!handBookFolder.exists()) {
             XunHandBook.getPlugin().saveResource("handbook\\示例.yml",false);
         }
     }
@@ -23,12 +26,5 @@ public class XunConfigManager {
             yamlFiles = handBookFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
         }
         return yamlFiles;
-        /*List<String> name = null;
-        if (yamlFiles != null) {
-            for (File yamlFile : yamlFiles) {
-                name.add(yamlFile.getName());
-            }
-        }
-        return name;*/
     }
 }

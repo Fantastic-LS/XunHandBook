@@ -51,19 +51,21 @@ public class XunBookGui {
                     FileInputStream inputStream = new FileInputStream(file);
                     Yaml yaml = new Yaml();
                     Object data = yaml.load(inputStream);
-                    @SuppressWarnings("unchecked")
-                    Set<String> keys = ((Map<String, Object>) data).keySet();
-                    if (keys != null) {
-                        for (String key : keys) {
-                            if (key != null) {
-                                @SuppressWarnings("unchecked")
-                                Map<String, Object> nestedData = (Map<String, Object>) ((Map<String, Object>) data).get(key);
-                                ItemStack itemStack = getMMItem(key);
-                                int slotIndex = (Integer) nestedData.get("slot");
-                                inventory.setItem(slotIndex, itemStack);
-                                inv.put(file.getName().replaceAll("\\.yml", ""), inventory);
-                            } else {
-                                Bukkit.getServer().getConsoleSender().sendMessage("配置错误");
+                    if (data instanceof Map) {
+                        Map<String, Object> dataMap = (Map<String, Object>) data;
+                        Set<String> keys = dataMap.keySet();
+                        if (keys != null && !keys.isEmpty()) {
+                            for (String key : keys) {
+                                if (key != null) {
+                                    @SuppressWarnings("unchecked")
+                                    Map<String, Object> nestedData = (Map<String, Object>) ((Map<String, Object>) data).get(key);
+                                    ItemStack itemStack = getMMItem(key);
+                                    int slotIndex = (Integer) nestedData.get("slot");
+                                    inventory.setItem(slotIndex, itemStack);
+                                    inv.put(file.getName().replaceAll("\\.yml", ""), inventory);
+                                } else {
+                                    Bukkit.getServer().getConsoleSender().sendMessage("配置错误");
+                                }
                             }
                         }
                     } else {
@@ -75,14 +77,17 @@ public class XunBookGui {
             }
         }
     }
-
     public static void clearInventory() {
         inv.clear();
     }
 
     public static void openInventory(String playerName, String handName) {
         Player player = Bukkit.getPlayer(playerName);
-        Inventory inventory = inv.get(handName);
-        player.openInventory(inventory);
+        if (!inv.isEmpty() && inv != null) {
+            Inventory inventory = inv.get(handName);
+            player.openInventory(inventory);
+        } else {
+            player.sendMessage("§f[§cXunHandBook§f] §f该图鉴没有正确设置物品或物品位置!");
+        }
     }
 }

@@ -14,10 +14,12 @@ public class PlayerClickListener implements Listener {
     public void onPlayerClick(InventoryClickEvent event) {
         File[] files = XunConfigManager.getYamlFile();
         Inventory inventory = event.getClickedInventory();
-        String invName = inventory.getTitle();
-        for (File file : files) {
-            if (file.getName().replaceAll("\\.yml","").equalsIgnoreCase(invName)) {
-                event.setCancelled(true);
+        if (inventory.getTitle() != null) {
+            String invName = inventory.getTitle();
+            for (File file : files) {
+                if (file.getName().replaceAll("\\.yml","").equalsIgnoreCase(invName)) {
+                    event.setCancelled(true);
+                }
             }
         }
     }
